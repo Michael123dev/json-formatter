@@ -82,8 +82,15 @@ $(document).ready(function() {
 
   $('#copyBtn').on('click', function() {
     var formattedJson = jsonOutput.getValue();
-    copyToClipboard(formattedJson);
-    alert('JSON copied to clipboard!');
+    if (formattedJson != '// Your result is here' && formattedJson != '// Invalid JSON format. Please check your input.' && formattedJson != '')
+    {
+      copyToClipboard(formattedJson);
+      alert('JSON copied to clipboard!');
+    }
+    else
+    {
+      alert('Please enter valid JSON');
+    }
   });
 });
 
