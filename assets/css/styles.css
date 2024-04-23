@@ -1,0 +1,30 @@
+body {
+    background-color: #EFEFEF;
+}
+textarea {
+    overflow-y: scroll;
+    height: 100px;
+    resize: none; 
+    font-family: Menlo, monospace;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 20px;
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .action-btn {
+        margin-top: 10px; /* Add some bottom margin for spacing */
+        margin-bottom: 10px; /* Add some bottom margin for spacing */
+    }
+}
+
+.CodeMirror {
+    height: 600px;
+    border: 1px solid #ccc;
+    font-family: monospace;
+}
