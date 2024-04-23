@@ -11,15 +11,11 @@ JSON Formatter is an open-source project designed to simplify the reading and or
 
 ## How to Use
 
-Simply clone this repository and start using JSON Formatter in your projects. Refer to the documentation for detailed instructions on installation and usage.
+Simply clone this repository and start using JSON Formatter in your projects. Just copy and paste your tangled JSON structures, and let JSON Formatter do the job for you.
 
 ## Contributing
 
 We believe that great software is built through collaboration. If you have ideas for improving JSON Formatter or want to contribute to its development, please check out our contributing guidelines and get involved!
-
-## License
-
-JSON Formatter is licensed under the [MIT License](LICENSE), so feel free to use, modify, and distribute it as you see fit.
 
 ## Acknowledgements
 
