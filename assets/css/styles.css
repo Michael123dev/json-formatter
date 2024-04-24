@@ -1,15 +1,18 @@
 body {
     background-color: #EFEFEF;
 }
-textarea {
-    overflow-y: scroll;
-    height: 100px;
-    resize: none; 
-    font-family: Menlo, monospace;
+
+.CodeMirror {
+    font-family: Arial, monospace;
+    font-size: 14px;
+}
+
+table {
+    font-size: 14px;
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 1500px;
     margin: 40px auto;
     padding: 20px;
     /* border: 1px solid #ccc; */

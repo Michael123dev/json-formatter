@@ -12,7 +12,9 @@ $(document).ready(function() {
     autoCloseBrackets: true,
     extraKeys: {
       "Ctrl-Space": "autocomplete" // Enable autocomplete with Ctrl+Space
-    }
+    },
+    foldGutter: true,
+    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
   });
 
 
@@ -27,7 +29,9 @@ $(document).ready(function() {
     autoCloseBrackets: true,
     extraKeys: {
       "Ctrl-Space": "autocomplete" // Enable autocomplete with Ctrl+Space
-    }
+    },
+    foldGutter: true,
+    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
   });
 
   // Set up initial value
@@ -170,8 +174,12 @@ function displayTable(jsonData)
     });
     tableHtml += '</tbody>';
 
-    var objectKeys = Object.keys(jsonData[0]);
-    if(objectKeys.length > 8) scrollX = true;
+    var tableWidth = $("#outputTable").width();
+    var containerWidth = $(".container").width();
+    // console.log("Table width : " + tableWidth);
+    // console.log("Container width : " + containerWidth);
+    // console.log(tableWidth > containerWidth)
+    if(tableWidth > containerWidth) scrollX = true;
   }
 
   $("#outputTable").DataTable().destroy();
