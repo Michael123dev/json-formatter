@@ -55,6 +55,26 @@ $(document).ready(function() {
       } 
       catch (error) 
       {
+        var tableHtml = '<thead>' +
+        '<tr class="fw-semibold">' +
+        '<th>Object 1</th>' +
+        '<th>Object 2</th>' +
+        '<th>Object 3</th>' +
+        '<th>Object 4</th>' +
+        '<th>Object 5</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody>' +
+        '<tr>' +
+        '<td colspan="5" class="text-center">Invalid JSON format. Please check your input.</td>' +
+        '<td style="display: none;"></td>' +
+        '<td style="display: none;"></td>' +
+        '<td style="display: none;"></td>' +
+        '<td style="display: none;"></td>' +
+        '</tr>' +
+        '</tbody>';
+        $("#outputTable").DataTable().destroy();
+        $("#outputTable").html(tableHtml);
         jsonOutput.setValue('// Invalid JSON format. Please check your input.');
       }
     }
@@ -182,6 +202,7 @@ function displayTable(jsonData)
     if(tableWidth > containerWidth) scrollX = true;
   }
 
+  console.log(tableHtml)
   $("#outputTable").DataTable().destroy();
   $("#outputTable").html(tableHtml);
   $("#outputTable").DataTable({
