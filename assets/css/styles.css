@@ -1,14 +1,15 @@
 body {
     background-color: #EFEFEF;
+    font-size: 14px;
 }
 
 .CodeMirror {
     font-family: Arial, monospace;
-    font-size: 14px;
+    font-size: 12px !important;
 }
 
 table {
-    font-size: 14px;
+    font-size: 12px !important;
 }
 
 .container {

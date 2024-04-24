@@ -1,5 +1,18 @@
 $(document).ready(function() {
   $("#outputTable").DataTable();
+  // $('#csvInputTable').DataTable();
+
+  $("#csvJsonTab").click(function (e) { 
+    e.preventDefault();
+    $("#jsonCsvOutput").hide();
+    $("#csvJsonOutput").show();
+  });
+
+  $("#jsonCsvTab").click(function (e) { 
+    e.preventDefault();
+    $("#jsonCsvOutput").show();
+    $("#csvJsonOutput").hide();
+  });
 
   var jsonInput = CodeMirror.fromTextArea(document.getElementById("jsonInput"), {
     mode: "application/json",
@@ -32,6 +45,23 @@ $(document).ready(function() {
     },
     foldGutter: true,
     gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+  });
+
+  var jsonOutputFromCsv = CodeMirror.fromTextArea(document.getElementById('jsonOutputFromCsv'), {
+    mode: "application/json",
+    lineNumbers: true,
+    autofocus: true,
+    lineWrapping: true,
+    indentUnit: 2,
+    smartIndent: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    extraKeys: {
+      "Ctrl-Space": "autocomplete" // Enable autocomplete with Ctrl+Space
+    },
+    foldGutter: true,
+    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+    readOnly: true
   });
 
   // Set up initial value
@@ -116,7 +146,87 @@ $(document).ready(function() {
       alert('Please enter valid JSON');
     }
   });
+
+  // Handle file upload change event
+  $("#uploadCsvFile").change(function() {
+    var file = $('#uploadCsvFile')[0].files[0].name;
+    console.log(file);
+    $("#csvFileLabel").text(file);
+  
+    var file = $(this)[0].files[0];
+    var reader = new FileReader();
+  
+    reader.onload = function(e) {
+      var csv = e.target.result;
+      var rows = csv.split("\n").filter(row => row.trim() !== '');
+      var index = 0;
+      $('#csvInputTable tbody').empty();
+  
+      rows.forEach(function(row, index) {
+        if (index < 1) {
+          var headers = row.split(';');
+          var headerRow = '<tr>';
+          headers.forEach(function(header) {
+            headerRow += '<th>' + header + '</th>';
+          });
+          headerRow += '</tr>';
+          $('#csvInputTable thead').append(headerRow);
+        } else {
+          var cells = row.split(";");
+          var html = '';
+          cells.forEach(function(cell) {
+            html += '<td>' + cell + '</td>';
+          });
+          $('#csvInputTable tbody').append('<tr>' + html + '</tr>');
+        }
+      });
+  
+      $("#csvInputTable").show();
+  
+      // Destroy DataTable instance after appending data
+      $('#csvInputTable').DataTable().destroy();
+  
+      // Reinitialize DataTable with pageLength option
+      $('#csvInputTable').DataTable({
+        scrollX: true,
+        searching: false,
+        lengthChange: false,
+        ordering: true,
+        pageLength: 5
+      });
+  
+      convertCsvToJson(rows, jsonOutputFromCsv);
+    };
+  
+    reader.readAsText(file);
+  });
+  
+  
 });
+
+// Function to convert CSV to JSON and display in textarea
+function convertCsvToJson(rows, jsonOutputFromCsv) 
+{
+  var jsonData = [];
+  var headers = rows[0].split(";");
+
+  for (var i = 1; i < rows.length; i++) 
+  {
+    var data = {};
+    var cells = rows[i].split(";");
+
+    for (var j = 0; j < cells.length; j++) 
+    {
+      data[headers[j].trim()] = cells[j].trim();
+    }
+
+    jsonData.push(data);
+  }
+
+  var jsonOutput = JSON.stringify(jsonData, null, 4);
+  jsonOutputFromCsv.setValue(jsonOutput)
+  $('#csvJsonOutput').show();
+}
 
 // Function to download CSV
 function downloadCsv(csv, filename) 
@@ -206,7 +316,7 @@ function displayTable(jsonData)
 
   $("#outputTable").DataTable({
     scrollX: scrollX,
-    pageLength : 10,
+    pageLength : 5,
   });
 }
 
