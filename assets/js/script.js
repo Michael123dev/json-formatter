@@ -193,17 +193,17 @@ function displayTable(jsonData)
       tableHtml += '</tr>';
     });
     tableHtml += '</tbody>';
-
-    var tableWidth = $("#outputTable").width();
-    var containerWidth = $(".container").width();
-    console.log("Table width : " + tableWidth);
-    console.log("Container width : " + containerWidth);
-    console.log(tableWidth > containerWidth);
-    if(tableWidth > (containerWidth-60)) scrollX = true;
   }
 
   $("#outputTable").DataTable().destroy();
   $("#outputTable").html(tableHtml);
+
+  var tableWidth    =   $("#outputTable").width();
+  var cardBodyWidth =   $(".card-body").width();
+  // console.log("Table width: "+tableWidth);
+  // console.log("Card Body width: "+cardBodyWidth);
+  if(tableWidth >= cardBodyWidth) scrollX = true;
+
   $("#outputTable").DataTable({
     scrollX: scrollX,
     pageLength : 10,
