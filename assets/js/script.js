@@ -196,13 +196,12 @@ function displayTable(jsonData)
 
     var tableWidth = $("#outputTable").width();
     var containerWidth = $(".container").width();
-    // console.log("Table width : " + tableWidth);
-    // console.log("Container width : " + containerWidth);
-    // console.log(tableWidth > containerWidth)
-    if(tableWidth > containerWidth) scrollX = true;
+    console.log("Table width : " + tableWidth);
+    console.log("Container width : " + containerWidth);
+    console.log(tableWidth > containerWidth);
+    if(tableWidth > (containerWidth-60)) scrollX = true;
   }
 
-  console.log(tableHtml)
   $("#outputTable").DataTable().destroy();
   $("#outputTable").html(tableHtml);
   $("#outputTable").DataTable({
