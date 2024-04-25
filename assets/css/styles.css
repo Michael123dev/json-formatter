@@ -32,3 +32,7 @@ table {
     border: 1px solid #ccc;
     font-family: monospace;
 }
+
+.made-by-text {
+    font-size: 16px !important;
+}

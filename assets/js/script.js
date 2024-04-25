@@ -149,13 +149,11 @@ $(document).ready(function() {
 
   // Handle file upload change event
   $("#uploadCsvFile").change(function() {
-    var file = $('#uploadCsvFile')[0].files[0].name;
-    console.log(file);
-    $("#csvFileLabel").text(file);
-  
-    var file = $(this)[0].files[0];
-    var reader = new FileReader();
-  
+    var file      = $(this)[0].files[0];
+    var reader    = new FileReader();
+
+    $("#csvFileLabel").text(file.name);
+
     reader.onload = function(e) {
       var csv = e.target.result;
       var rows = csv.split("\n").filter(row => row.trim() !== '');
@@ -194,7 +192,10 @@ $(document).ready(function() {
         ordering: true,
         pageLength: 5
       });
+<<<<<<< HEAD
   
+=======
+>>>>>>> CSV-JSON
       convertCsvToJson(rows, jsonOutputFromCsv);
     };
   
