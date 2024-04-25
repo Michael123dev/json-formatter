@@ -65,7 +65,8 @@ $(document).ready(function() {
   });
 
   // Set up initial value
-  jsonOutput.setValue("// Formatted JSON is here!");
+  // jsonInput.setValue("// Paste your raw json here ...");
+  jsonOutput.setValue("// Your result is here");
 
   jsonInput.on("keyup", function(cm, change) {
     var jsonInput = cm.getValue();
@@ -146,57 +147,60 @@ $(document).ready(function() {
     }
   });
 
+  // Handle file upload change event
   $("#uploadCsvFile").change(function() {
+    var file = $('#uploadCsvFile')[0].files[0].name;
+    console.log(file);
+    $("#csvFileLabel").text(file);
+  
     var file = $(this)[0].files[0];
     var reader = new FileReader();
-
+  
     reader.onload = function(e) {
-      var csv       = e.target.result;
-      var rows      = csv.split("\n").filter(row => row.trim() !== '');
-      var tableHtml = '';
-
-      $("#csvInputTable").empty();
-
-      rows.forEach(function(row, index) 
-      {
-        // Index 0 is header
-        if (index === 0) 
-        {
-          tableHtml += '<thead><tr>';
+      var csv = e.target.result;
+      var rows = csv.split("\n").filter(row => row.trim() !== '');
+      var index = 0;
+      $('#csvInputTable tbody').empty();
+  
+      rows.forEach(function(row, index) {
+        if (index < 1) {
           var headers = row.split(';');
+          var headerRow = '<tr>';
           headers.forEach(function(header) {
-              tableHtml += '<th>' + header + '</th>';
+            headerRow += '<th>' + header + '</th>';
           });
-          tableHtml += '</tr></thead><tbody>';
-        } 
-        else 
-        {
+          headerRow += '</tr>';
+          $('#csvInputTable thead').append(headerRow);
+        } else {
           var cells = row.split(";");
-          tableHtml += '<tr>';
+          var html = '';
           cells.forEach(function(cell) {
-            tableHtml += '<td>' + cell + '</td>';
+            html += '<td>' + cell + '</td>';
           });
-          tableHtml += '</tr>';
+          $('#csvInputTable tbody').append('<tr>' + html + '</tr>');
         }
       });
-      
-      tableHtml += '</tbody>';
-        
-      $("#csvInputTable").DataTable().destroy();
-      $('#csvInputTable').html(tableHtml);
-
-      // Initialize DataTable
+  
+      $("#csvInputTable").show();
+  
+      // Destroy DataTable instance after appending data
+      $('#csvInputTable').DataTable().destroy();
+  
+      // Reinitialize DataTable with pageLength option
       $('#csvInputTable').DataTable({
         scrollX: true,
+        // searching: false,
         lengthChange: false,
         ordering: true,
         pageLength: 5
       });
+  
+      convertCsvToJson(rows, jsonOutputFromCsv);
     };
-
-    $(".file-upload-section").addClass("mb-3");
+  
     reader.readAsText(file);
   });
+  
   
 });
 
@@ -315,6 +319,5 @@ function displayTable(jsonData)
     pageLength : 5,
   });
 }
-
 
 
