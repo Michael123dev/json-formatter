@@ -1,4 +1,7 @@
 $(document).ready(function() {
+  var jsonOutputInitVal     = "// Formatted JSON is here!";
+  var jsonOutputInvalidVal  = "// Invalid JSON format. Please check your input!";
+
   $("#outputTable").DataTable();
   // $('#csvInputTable').DataTable();
 
@@ -65,7 +68,7 @@ $(document).ready(function() {
   });
 
   // Set up initial value
-  jsonOutput.setValue("// Formatted JSON is here!");
+  jsonOutput.setValue(jsonOutputInitVal);
 
   jsonInput.on("keyup", function(cm, change) {
     var jsonInput = cm.getValue();
@@ -95,7 +98,7 @@ $(document).ready(function() {
         '</thead>' +
         '<tbody>' +
         '<tr>' +
-        '<td colspan="5" class="text-center">Invalid JSON format. Please check your input.</td>' +
+        '<td colspan="5" class="text-center">Invalid JSON format. Please check your input!</td>' +
         '<td style="display: none;"></td>' +
         '<td style="display: none;"></td>' +
         '<td style="display: none;"></td>' +
@@ -104,15 +107,15 @@ $(document).ready(function() {
         '</tbody>';
         $("#outputTable").DataTable().destroy();
         $("#outputTable").html(tableHtml);
-        jsonOutput.setValue('// Invalid JSON format. Please check your input.');
+        jsonOutput.setValue(jsonOutputInvalidVal);
       }
     }
   });
 
   $('#downloadBtn').on('click', function() 
   {
-    var downloadResult = jsonInput.getValue();
-    if (downloadResult.trim() === '') 
+    var downloadResult = jsonOutput.getValue().trim();
+    if (downloadResult == "" || downloadResult == "// Invalid JSON format. Please check your input!" || downloadResult == "// Formatted JSON is here!") 
     {
       alert("Error downloading JSON: Please insert valid JSON");
     } 
@@ -135,7 +138,7 @@ $(document).ready(function() {
 
   $('#copyBtn').on('click', function() {
     var formattedJson = jsonOutput.getValue();
-    if (formattedJson != '// Your result is here' && formattedJson != '// Invalid JSON format. Please check your input.' && formattedJson != '')
+    if (formattedJson != jsonOutputInitVal && formattedJson != jsonOutputInvalidVal && formattedJson != '')
     {
       copyToClipboard(formattedJson);
       alert('JSON copied to clipboard!');
