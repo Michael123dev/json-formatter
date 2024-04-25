@@ -192,10 +192,6 @@ $(document).ready(function() {
         ordering: true,
         pageLength: 5
       });
-<<<<<<< HEAD
-  
-=======
->>>>>>> CSV-JSON
       convertCsvToJson(rows, jsonOutputFromCsv);
     };
   
