@@ -115,7 +115,7 @@ $(document).ready(function() {
   $('#downloadBtn').on('click', function() 
   {
     var downloadResult = jsonOutput.getValue().trim();
-    if (downloadResult == "" || downloadResult == "// Invalid JSON format. Please check your input!" || downloadResult == "// Formatted JSON is here!") 
+    if (downloadResult == "" || downloadResult == jsonOutputInitVal || downloadResult == jsonOutputInvalidVal) 
     {
       alert("Error downloading JSON: Please insert valid JSON");
     } 
