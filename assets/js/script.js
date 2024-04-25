@@ -189,7 +189,7 @@ $(document).ready(function() {
       // Reinitialize DataTable with pageLength option
       $('#csvInputTable').DataTable({
         scrollX: true,
-        // searching: false,
+        searching: false,
         lengthChange: false,
         ordering: true,
         pageLength: 5
