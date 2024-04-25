@@ -6,7 +6,8 @@ JSON Formatter is an open-source project designed to simplify the reading and or
 
 - **Simplified JSON Parsing**: Say goodbye to tangled JSON structures. JSON Formatter provides a clean, intuitive interface for parsing JSON data.
 - **Organized Data Viewing**: Easily navigate through your JSON data with organized, hierarchical views.
-- **Download as CSV**: Convert your JSON data into CSV format with just a click. Perfect for exporting data to spreadsheets or databases.
+- **JSON to CSV Converter**: Easily convert your JSON data into CSV format with just a click. Perfect for exporting data to spreadsheets or databases.
+- **CSV to JSON Converter**: Effortlessly convert your CSV data into JSON format with just a click. Ideal for seamlessly transferring data to spreadsheets or databases.
 - **Collaboration Friendly**: We welcome collaboration from fellow developers to improve and expand this project. Feel free to contribute your ideas and expertise.
 
 ## How to Use
