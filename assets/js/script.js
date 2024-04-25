@@ -147,8 +147,10 @@ $(document).ready(function() {
   });
 
   $("#uploadCsvFile").change(function() {
-    var file = $(this)[0].files[0];
-    var reader = new FileReader();
+    var file      = $(this)[0].files[0];
+    var reader    = new FileReader();
+
+    $("#csvFileLabel").text(file.name);
 
     reader.onload = function(e) {
       var csv       = e.target.result;
@@ -192,6 +194,7 @@ $(document).ready(function() {
         ordering: true,
         pageLength: 5
       });
+      convertCsvToJson(rows, jsonOutputFromCsv);
     };
 
     $(".file-upload-section").addClass("mb-3");
