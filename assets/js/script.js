@@ -150,72 +150,98 @@ $(document).ready(function() {
   });
 
   $("#uploadCsvFile").change(function() {
-    var file      = $(this)[0].files[0];
-    var reader    = new FileReader();
-
+    var file          = $("#uploadCsvFile")[0].files[0];
+    var csvSeparator  = $("#csvSeparator").val();
     $("#csvFileLabel").text(file.name);
-
-    reader.onload = function(e) {
-      var csv       = e.target.result;
-      var rows      = csv.split("\n").filter(row => row.trim() !== '');
-      var tableHtml = '';
-
-      $("#csvInputTable").empty();
-
-      rows.forEach(function(row, index) 
-      {
-        // Index 0 is header
-        if (index === 0) 
-        {
-          tableHtml += '<thead><tr>';
-          var headers = row.split(';');
-          headers.forEach(function(header) {
-              tableHtml += '<th>' + header + '</th>';
-          });
-          tableHtml += '</tr></thead><tbody>';
-        } 
-        else 
-        {
-          var cells = row.split(";");
-          tableHtml += '<tr>';
-          cells.forEach(function(cell) {
-            tableHtml += '<td>' + cell + '</td>';
-          });
-          tableHtml += '</tr>';
-        }
-      });
-      
-      tableHtml += '</tbody>';
-        
-      $("#csvInputTable").DataTable().destroy();
-      $('#csvInputTable').html(tableHtml);
-
-      // Initialize DataTable
-      $('#csvInputTable').DataTable({
-        scrollX: true,
-        lengthChange: false,
-        ordering: true,
-        pageLength: 5
-      });
-      convertCsvToJson(rows, jsonOutputFromCsv);
-    };
-
-    $(".file-upload-section").addClass("mb-3");
-    reader.readAsText(file);
+    displayDatatableCsvToJson(csvSeparator, jsonOutputFromCsv);
   });
-  
+
+  $("#csvSeparator").change(function() {
+    var csvSeparator  = $(this).val();
+    displayDatatableCsvToJson(csvSeparator, jsonOutputFromCsv);
+  });
+
 });
 
-// Function to convert CSV to JSON and display in textarea
-function convertCsvToJson(rows, jsonOutputFromCsv) 
+function displayDatatableCsvToJson(csvSeparator, jsonOutputFromCsv)
 {
+  var file          = $("#uploadCsvFile")[0].files[0];
+  var reader        = new FileReader();
+
+  // $("#csvFileLabel").text(file.name);
+
+  reader.onload = function(e) {
+    var csv       = e.target.result;
+    var rows      = csv.split("\n").filter(row => row.trim() !== '');
+    var tableHtml = '';
+    var scrollX   = false;
+
+    $("#csvInputTable").empty();
+
+    rows.forEach(function(row, index) 
+    {
+      // Index 0 is header
+      if (index === 0) 
+      {
+        tableHtml += '<thead><tr>';
+        var headers = row.split(csvSeparator);
+        headers.forEach(function(header) {
+          header = header.replace(/^['"]+|['"]+$/g, '');
+          tableHtml += '<th>' + header + '</th>';
+        });
+        tableHtml += '</tr></thead><tbody>';
+      } 
+      else 
+      {
+        var cells = row.split(csvSeparator);
+        tableHtml += '<tr>';
+        cells.forEach(function(cell) {
+          cell = cell.replace(/^['"]+|['"]+$/g, '');
+          tableHtml += '<td>' + cell + '</td>';
+        });
+        tableHtml += '</tr>';
+      }
+    });
+    
+    tableHtml += '</tbody>';
+      
+    $("#csvInputTable").DataTable().destroy();
+    $('#csvInputTable').html(tableHtml);
+
+    var tableWidth    =   $("#csvInputTable").width();
+    var cardBodyWidth =   $(".card-body").width();
+    // console.log("Table width: "+tableWidth);
+    // console.log("Card Body width: "+cardBodyWidth);
+    if(tableWidth >= cardBodyWidth) scrollX = true;
+
+    // Initialize DataTable
+    $('#csvInputTable').DataTable({
+      scrollX: scrollX,
+      lengthChange: false,
+      ordering: true,
+      pageLength: 5
+    });
+    convertCsvToJson(csvSeparator, rows, jsonOutputFromCsv);
+  };
+
+  $(".file-upload-section").addClass("mb-3");
+  reader.readAsText(file);
+}
+// 
+// Function to convert CSV to JSON and display in textarea
+function convertCsvToJson(csvSeparator, rows, jsonOutputFromCsv) 
+{
+  rows = rows.map(entry => entry.replace(/"/g, ''));
+  rows = rows.map(entry => entry.replace(/"/g, "'"));
+  rows = rows.map(entry => entry.replace(/,/g, '\r,'));
+
   var jsonData = [];
-  var headers = rows[0].split(";");
+  var headers = rows[0].split(csvSeparator);
 
   for (var i = 1; i < rows.length; i++) 
   {
     var data = {};
-    var cells = rows[i].split(";");
+    var cells = rows[i].split(csvSeparator);
 
     for (var j = 0; j < cells.length; j++) 
     {
