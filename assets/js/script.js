@@ -141,7 +141,7 @@ $(document).ready(function() {
     var downloadResult = jsonOutputFromCsv.getValue().trim();
     if (downloadResult == "" || downloadResult == jsonOutputInitVal || downloadResult == jsonOutputInvalidVal) 
     {
-      alert("Error downloading JSON: Please insert valid JSON");
+      alert("Error downloading JSON: Please insert valid CSV");
     } 
     else 
     {
@@ -182,7 +182,7 @@ $(document).ready(function() {
     }
     else
     {
-      alert('Please enter valid JSON');
+      alert('Please enter valid CSV');
     }
   });
 
