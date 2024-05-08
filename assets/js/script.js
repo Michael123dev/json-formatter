@@ -136,8 +136,45 @@ $(document).ready(function() {
     }
   });
 
+  $('#downloadBtnFromCsv').on('click', function() 
+  {
+    var downloadResult = jsonOutputFromCsv.getValue().trim();
+    if (downloadResult == "" || downloadResult == jsonOutputInitVal || downloadResult == jsonOutputInvalidVal) 
+    {
+      alert("Error downloading JSON: Please insert valid JSON");
+    } 
+    else 
+    {
+      try 
+      {
+        var formattedJson = JSON.parse(downloadResult);
+        var filename = $('#csvFileLabel').text().replace('.csv', '.json');
+        downloadJson(formattedJson, filename);
+      } 
+      catch (error) 
+      {
+        var errorMessage = 'Error downloading JSON: ' + error;
+        alert(errorMessage);
+        console.error(errorMessage);
+      }
+    }
+  });
+
   $('#copyBtn').on('click', function() {
     var formattedJson = jsonOutput.getValue();
+    if (formattedJson != jsonOutputInitVal && formattedJson != jsonOutputInvalidVal && formattedJson != '')
+    {
+      copyToClipboard(formattedJson);
+      alert('JSON copied to clipboard!');
+    }
+    else
+    {
+      alert('Please enter valid JSON');
+    }
+  });
+
+  $('#copyBtnFromCsv').on('click', function() {
+    var formattedJson = jsonOutputFromCsv.getValue();
     if (formattedJson != jsonOutputInitVal && formattedJson != jsonOutputInvalidVal && formattedJson != '')
     {
       copyToClipboard(formattedJson);
@@ -268,6 +305,18 @@ function downloadCsv(csv, filename)
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+// Function to download JSON
+function downloadJson(json, filename) 
+{
+  var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json));
+  var downloadAnchorNode = document.createElement('a');
+  downloadAnchorNode.setAttribute("href", dataStr);
+  downloadAnchorNode.setAttribute("download", filename);
+  document.body.appendChild(downloadAnchorNode); // required for firefox
+  downloadAnchorNode.click();
+  downloadAnchorNode.remove();
 }
 
 function jsonToCsv(json) 
