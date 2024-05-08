@@ -117,7 +117,7 @@ $(document).ready(function() {
     var downloadResult = jsonOutput.getValue().trim();
     if (downloadResult == "" || downloadResult == jsonOutputInitVal || downloadResult == jsonOutputInvalidVal) 
     {
-      alert("Error downloading JSON: Please insert valid JSON");
+      alert("Error downloading CSV: Please insert valid JSON");
     } 
     else 
     {
