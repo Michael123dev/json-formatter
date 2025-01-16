@@ -375,6 +375,9 @@ function displayTable(jsonData)
     jsonData.forEach(function(row) {
       tableHtml += '<tr>';
       Object.values(row).forEach(function(value) {
+        if (typeof value === 'object') {
+          value = JSON.stringify(value);
+        }
         tableHtml += '<td>' + value + '</td>';
       });
       tableHtml += '</tr>';
